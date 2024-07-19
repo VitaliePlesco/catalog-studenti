@@ -24,7 +24,7 @@ type User = {
 export default function Home() {
   const [users, setUsers] = useState<User[]>([]);
   const getUsers = () => {
-    fetch("http://localhost:5000")
+    fetch("https://catalog-studenti-uskl.onrender.com")
       .then((response) => response.json())
       .then((data) => setUsers(data));
   };
