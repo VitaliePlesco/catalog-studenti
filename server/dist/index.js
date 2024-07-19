@@ -3,7 +3,7 @@ import cors from "cors";
 import users from "./users.js";
 const port = 5000;
 const app = express();
-const allowedOrigins = ['http://localhost:3000'];
+const allowedOrigins = ['http://localhost:3000', 'https://catalog-studenti-1.onrender.com', 'https://catalog-studenti-uskl.onrender.com'];
 const options = {
     origin: allowedOrigins
 };
