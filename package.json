@@ -5,7 +5,7 @@
   "scripts": {
     "install-server": "cd server && npm install",
     "start-server": "cd server && node dist/index.js",
-    "install-client": "cd client && npm install",
+    "install-client": "cd client && pnpm install",
     "build-client": "cd client && pnpm run build",
     "start-client": "cd client && pnpm run start"
   },
