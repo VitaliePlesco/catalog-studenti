@@ -58,6 +58,7 @@ export const disciplineRelations = relations(discipline, ({ many }) => ({
 }))
 
 export type User = typeof user.$inferInsert;
+export type UserSelect = typeof user.$inferSelect;
 export type Student = typeof student.$inferInsert;
 export type Discipline = typeof discipline.$inferInsert;
 export type Mark = typeof mark.$inferInsert;
