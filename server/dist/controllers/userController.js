@@ -6,7 +6,7 @@ export const authUser = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            return res.status(1).json({ message: "All fields are required" }).end();
+            return res.status(401).json({ message: "All fields are required" }).end();
         }
         const userExists = await db.query.user.findFirst({
             where: (user, { eq }) => eq(user.email, email)
@@ -61,7 +61,5 @@ export const logoutUser = async (req, res) => {
     return res.status(200).json({ message: "Logout user" });
 };
 export const getUserProfile = async (req, res) => {
-    const user = req.user;
-    console.log(user);
     return res.status(200).json({ message: "User profile" });
 };

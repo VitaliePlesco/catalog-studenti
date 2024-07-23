@@ -1,7 +1,8 @@
 import express, { Express, Request, Response, Application } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import userRoutes from "./routes/userRoutes.js"
+import userRoutes from "./routes/userRoutes.js";
+import studentRoutes from "./routes/studentRoutes.js";
 
 
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/api/users", userRoutes);
+app.use('/api/students', studentRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "message" });

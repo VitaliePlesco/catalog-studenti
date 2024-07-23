@@ -4,10 +4,13 @@ import { NextFunction, Request, Response } from "express";
 import { db } from "../db/index.js";
 import { eq } from "drizzle-orm";
 
+export type UserIdAndEmail = Omit<UserSelect, "password" | "lastName" | "firstName">;
+
 declare global {
   namespace Express {
     interface Request {
-      user: any
+      user: UserIdAndEmail[]
+
     }
   }
 }
@@ -19,8 +22,8 @@ const protect = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
       req.user = await db.select({
-        field1: user.id,
-        field2: user.email,
+        id: user.id,
+        email: user.email,
       }).from(user).where(eq(user.id, decoded.id));
       next();
     } catch (error) {

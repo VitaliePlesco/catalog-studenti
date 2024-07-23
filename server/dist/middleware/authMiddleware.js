@@ -8,8 +8,8 @@ const protect = async (req, res, next) => {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await db.select({
-                field1: user.id,
-                field2: user.email,
+                id: user.id,
+                email: user.email,
             }).from(user).where(eq(user.id, decoded.id));
             next();
         }

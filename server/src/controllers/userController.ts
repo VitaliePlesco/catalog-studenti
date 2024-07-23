@@ -5,12 +5,14 @@ import generateToken from "../utils/generateToken.js";
 import bcrypt from "bcryptjs";
 
 
+
+
 export const authUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(1).json({ message: "All fields are required" }).end();
+      return res.status(401).json({ message: "All fields are required" }).end();
     }
 
     const userExists = await db.query.user.findFirst({
@@ -74,7 +76,5 @@ export const logoutUser = async (req: Request, res: Response) => {
 }
 
 export const getUserProfile = async (req: Request, res: Response) => {
-  const user = req.user;
-  console.log(user);
   return res.status(200).json({ message: "User profile" });
 }
