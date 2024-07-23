@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
-import users from "./users.js";
 const port = 5000;
 const app = express();
 const allowedOrigins = ['http://localhost:3000', 'https://catalog-studenti-1.onrender.com', 'https://catalog-studenti-uskl.onrender.com'];
@@ -15,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/api/users", userRoutes);
 app.get("/", (req, res) => {
-    res.json(users);
+    res.json({ message: "message" });
 });
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
