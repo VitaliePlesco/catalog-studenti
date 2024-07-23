@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
+import disciplineRoutes from "./routes/disciplineRoutes.js"
 
 
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/api/users", userRoutes);
 app.use('/api/students', studentRoutes);
+app.use("/api/disciplines", disciplineRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "message" });
