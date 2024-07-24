@@ -25,7 +25,6 @@ export const createMark = async (req: Request, res: Response) => {
       studentId: Number(newMark.studentId),
       disciplineId: Number(newMark.disciplineId),
     }).returning();
-
     return res.status(201).json(newMark).end();
   } catch (error) {
     return res.status(400).json({ message: "could not create new mark", error: error });
@@ -50,7 +49,6 @@ export const updateMark = async (req: Request, res: Response) => {
   const markId = req.params.id;
   const newMark = req.body;
   const markById = await db.select().from(mark).where(eq(mark.id, Number(markId)));
-
   if (markById.length === 0) {
     return res.status(400).json({ message: "mark doesn't exist" })
   }

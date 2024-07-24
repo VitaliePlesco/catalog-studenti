@@ -5,6 +5,7 @@ import userRoutes from "./routes/userRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
 import disciplineRoutes from "./routes/disciplineRoutes.js";
 import markRoutes from "./routes/markRoutes.js";
+import studentDisciplineRoutes from "./routes/studentDisciplineRoutes.js"
 
 
 
@@ -27,6 +28,7 @@ app.use("/api/users", userRoutes);
 app.use('/api/students', studentRoutes);
 app.use("/api/disciplines", disciplineRoutes);
 app.use("/api/marks", markRoutes);
+app.use("/api/student-discipline", studentDisciplineRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "message" });
