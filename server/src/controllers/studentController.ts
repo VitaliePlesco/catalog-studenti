@@ -49,7 +49,7 @@ export const deleteStudent = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "student doesn't exist" })
   }
   try {
-    const updatedStudent = await db.delete(student).where(eq(student.id, Number(studentId)));
+    await db.delete(student).where(eq(student.id, Number(studentId)));
     return res.status(200).json({ message: "student has been deleted" });
   } catch (error) {
     return res.status(400).json({ message: "could not delete student", error: error });
