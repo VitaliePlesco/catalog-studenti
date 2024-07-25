@@ -2,46 +2,27 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-type User = {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-};
-
 export default function Home() {
-  const [users, setUsers] = useState<User[]>([]);
-  const getUsers = () => {
-    fetch("https://catalog-studenti-uskl.onrender.com")
+  const [students, setStudents] = useState([]);
+  const getStudents = () => {
+    fetch("http://localhost:5000/api/students")
       .then((response) => response.json())
-      .then((data) => setUsers(data));
+      .then((data) => setStudents(data));
   };
 
   useEffect(() => {
-    getUsers();
+    getStudents();
   }, []);
 
   return (
-    <main>
+    <main className="container mx-auto">
       <h1>Users</h1>
-      {users.map((user) => (
-        <div key={user.id}>
-          <h3>{user.name}</h3>
-          <h5>{user.email}</h5>
+      {/* {students.map((student) => (
+        <div key={student.id}>
+          <h3>{student.firstName}</h3>
+          <h3>{student.lastName}</h3>
         </div>
-      ))}
+      ))} */}
     </main>
   );
 }
