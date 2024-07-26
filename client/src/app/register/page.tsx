@@ -89,7 +89,7 @@ export default function Register() {
         ></div>
         <Button className="w-full">Creează cont</Button>
         <div className="text-center pt-12 pb-2">
-          <Link href="/signup">
+          <Link href="/login">
             <span className=" text-blue-500 hover:underline">
               Accesează contul
             </span>

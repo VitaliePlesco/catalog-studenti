@@ -60,7 +60,7 @@ export default function Login() {
         </div>
         <Button className="w-full">Intră în cont</Button>
         <div className="text-center pt-12 pb-2">
-          <Link href="/signup">
+          <Link href="/register">
             <span className=" text-blue-500 hover:underline">
               Creează cont nou
             </span>
