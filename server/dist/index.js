@@ -10,7 +10,9 @@ const port = 5000;
 const app = express();
 const allowedOrigins = ['http://localhost:3000', 'https://catalog-studenti-1.onrender.com', 'https://catalog-studenti-uskl.onrender.com'];
 const options = {
-    origin: allowedOrigins
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
 };
 app.use(cors(options));
 app.use(express.json());
@@ -21,9 +23,6 @@ app.use('/api/students', studentRoutes);
 app.use("/api/disciplines", disciplineRoutes);
 app.use("/api/marks", markRoutes);
 app.use("/api/student-discipline", studentDisciplineRoutes);
-app.get("/", (req, res) => {
-    res.json({ message: "message" });
-});
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });

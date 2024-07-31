@@ -4,9 +4,10 @@ import { createStudent, deleteStudent, getStudentById, getStudents, updateStuden
 import { protect } from "../middleware/authMiddleware.js";
 
 
-router.route("/").get(protect, getStudents).post(protect, createStudent);
+router.route("/").post(protect, createStudent);
+router.route("/:userId").get(protect, getStudents)
 router
-  .route("/:id")
+  .route("/student/:id")
   .get(protect, getStudentById)
   .delete(protect, deleteStudent)
   .put(protect, updateStudent);

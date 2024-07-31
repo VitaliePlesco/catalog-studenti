@@ -11,12 +11,14 @@ export const getDisciplines = async (req, res) => {
     }
 };
 export const createDiscipline = async (req, res) => {
+    const user = req.user;
     const { name } = req.body;
     try {
         const newDiscipline = await db.insert(discipline).values({
             name: name,
-        }).returning({ id: discipline.id, name: discipline.name });
-        return res.status(201).json(newDiscipline).end();
+            userId: user[0]?.id,
+        }).returning();
+        return res.status(201).json(newDiscipline);
     }
     catch (error) {
         return res.status(400).json({ message: "could not create new student", error: error });

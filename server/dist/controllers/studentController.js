@@ -2,8 +2,14 @@ import { db } from "../db/index.js";
 import { student } from "../db/schema.js";
 import { eq } from "drizzle-orm";
 export const getStudents = async (req, res) => {
+    const userId = req.params.userId;
     try {
-        const students = await db.query.student.findMany();
+        const students = await db.query.student.findMany({
+            where: (student, { eq }) => eq(student.userId, String(userId))
+        });
+        if (students.length === 0 || undefined) {
+            return res.status(404).json({ message: "No students in the database" });
+        }
         return res.status(200).json(students);
     }
     catch (error) {
@@ -14,13 +20,27 @@ export const getStudentById = async (req, res) => {
     const studentId = req.params.id;
     try {
         const studentById = await db.select().from(student).where(eq(student.id, Number(studentId)));
-        if (studentById.length === 0) {
+        if (studentById.length === 0 || undefined) {
             return res.status(404).json({ message: "student doesn't exist" });
         }
         return res.status(200).json(studentById);
     }
     catch (error) {
         return res.status(400).json({ message: "could not find student", error: error });
+    }
+};
+export const deleteStudent = async (req, res) => {
+    const studentId = req.params.id;
+    const studentById = await db.select().from(student).where(eq(student.id, Number(studentId)));
+    if (studentById.length === 0 || undefined) {
+        return res.status(404).json({ message: "student doesn't exist" });
+    }
+    try {
+        await db.delete(student).where(eq(student.id, Number(studentId)));
+        return res.status(200).json({ message: "student has been deleted" });
+    }
+    catch (error) {
+        return res.status(400).json({ message: "could not delete student", error: error });
     }
 };
 export const createStudent = async (req, res) => {
@@ -31,25 +51,11 @@ export const createStudent = async (req, res) => {
             firstName: firstName,
             lastName: lastName,
             userId: user[0]?.id,
-        }).returning({ id: student.id, email: student.firstName });
-        return res.status(201).json({ message: "new student succes" }).end();
+        }).returning();
+        return res.status(201).json(newStudent).end();
     }
     catch (error) {
         return res.status(400).json({ message: "could not create new student", error: error });
-    }
-};
-export const deleteStudent = async (req, res) => {
-    const studentId = req.params.id;
-    const studentById = await db.select().from(student).where(eq(student.id, Number(studentId)));
-    if (studentById.length === 0) {
-        return res.status(404).json({ message: "student doesn't exist" });
-    }
-    try {
-        await db.delete(student).where(eq(student.id, Number(studentId)));
-        return res.status(200).json({ message: "student has been deleted" });
-    }
-    catch (error) {
-        return res.status(400).json({ message: "could not delete student", error: error });
     }
 };
 export const updateStudent = async (req, res) => {

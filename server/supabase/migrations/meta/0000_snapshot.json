@@ -1,5 +1,5 @@
 {
-  "id": "8958c0c4-b5b8-4d00-b057-725ff12a5ba3",
+  "id": "9631e57f-a62d-479f-b859-f3174fc8791a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -19,10 +19,30 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "discipline_userId_user_id_fk": {
+          "name": "discipline_userId_user_id_fk",
+          "tableFrom": "discipline",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -53,6 +73,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
@@ -76,6 +102,19 @@
           "tableTo": "discipline",
           "columnsFrom": [
             "disciplineId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "mark_userId_user_id_fk": {
+          "name": "mark_userId_user_id_fk",
+          "tableFrom": "mark",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -150,6 +189,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
@@ -173,6 +218,19 @@
           "tableTo": "discipline",
           "columnsFrom": [
             "disciplineId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "student_discipline_userId_user_id_fk": {
+          "name": "student_discipline_userId_user_id_fk",
+          "tableFrom": "student_discipline",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
           ],
           "columnsTo": [
             "id"

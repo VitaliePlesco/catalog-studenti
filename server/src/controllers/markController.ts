@@ -18,12 +18,14 @@ export const getStudentMarksByDiscipline = async (req: Request, res: Response) =
 
 
 export const createMark = async (req: Request, res: Response) => {
+  const user = req.user;
   const newMark = req.body;
   try {
     const createdMark = await db.insert(mark).values({
       mark: Number(newMark.mark),
       studentId: Number(newMark.studentId),
       disciplineId: Number(newMark.disciplineId),
+      userId: user[0]?.id as string,
     }).returning();
     return res.status(201).json(newMark).end();
   } catch (error) {

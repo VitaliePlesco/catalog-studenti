@@ -15,11 +15,13 @@ export const getStudentDisciplines = async (req: Request, res: Response) => {
 }
 
 export const createStudentDiscipline = async (req: Request, res: Response) => {
+  const user = req.user;
   const { studentId, disciplineId } = req.body;
   try {
     const assignDiscipline = await db.insert(studentDiscipline).values({
       studentId: Number(studentId),
-      disciplineId: Number(disciplineId)
+      disciplineId: Number(disciplineId),
+      userId: user[0]?.id as string,
     }).returning();
     return res.status(201).json({ message: "new discipline assigned successfully" }).end();
   } catch (error) {

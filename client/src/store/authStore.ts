@@ -1,30 +1,42 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { axiosPrivate } from "@/axios";
 
+export type User = {
+  userId: string;
+  name: string;
+  email: string;
+}
 type AuthState = {
   user: any,
-  token: any
+  accessToken: boolean
 }
 
 type AuthActions = {
-  setCredentials: (credentials: {}) => void;
-  logOut: () => void;
+  login: (credentials: { userId: string, name: string, email: string }, accessToken: boolean) => void;
+  logout: () => void;
 }
 
 const initialAuthState: AuthState = {
-  user: {},
-  token: {}
+  user: null,
+  accessToken: false
 }
 
-const useAuthStore = create<AuthState & AuthActions>()((set) => ({
+export const useAuthStore = create<AuthState & AuthActions>()(persist((set) => ({
   ...initialAuthState,
-  setCredentials: (credentials: any) => {
-    set({ user: credentials.user });
-    set({ token: credentials.token });
+  login: (credentials: User, accessToken: boolean) => {
+
+    set({ user: credentials, accessToken: accessToken });
+
   },
-  logOut: () => {
+  logout: async () => {
+    const response = await axiosPrivate.post("/users/logout");
+    localStorage.clear();
     set({ user: null });
-    set({ token: null });
+    set({ accessToken: false });
   }
+}), {
+  name: "authStore"
 }))
 
 

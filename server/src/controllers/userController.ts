@@ -28,10 +28,26 @@ export const authUser = async (req: Request, res: Response) => {
     if (!passwordMatch) {
       return res.status(400).json({ message: "Unauthorized" });
     }
+
     if (userExists && passwordMatch) {
-      generateToken(res, userExists.id);
-      const accessToken = jwt.sign(userExists.id, process.env.JWT_SECRET as string, { expiresIn: "15min" });
-      return res.status(201).json({ accessToken }).end();
+
+      const accessToken = jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET as string, { expiresIn: "30min" });
+      const refreshToken = jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET as string, { expiresIn: "365days" });
+
+      res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 30 * 60 * 1000,
+      });
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 365 * 24 * 60 * 60 * 1000,
+      });
+
+      return res.status(200).json({ userId: userExists.id, name: userExists.firstName, email: userExists.email });
     }
 
   } catch (error) {
@@ -73,45 +89,36 @@ export const registerUser = async (req: Request, res: Response) => {
 }
 
 export const refreshToken = async (req: Request, res: Response) => {
-  const cookies = req.cookies;
-
-  if (!cookies?.jwt) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
-  try {
-    const refreshToken = cookies.jwt;
-
+  const refreshToken = req.cookies.refreshToken;
+  let newToken = false
+  if (!refreshToken) {
+    res.status(401).json({ message: "Unauthorized", token: "No refresh token" });
+  } else {
     jwt.verify(refreshToken, process.env.JWT_SECRET as string,
       async (err: any, decoded: any) => {
         if (err) {
           return res.status(403).json({ message: "Forbiden" });
+        } else {
+          const accessToken = jwt.sign({ userId: decoded.id }, process.env.JWT_SECRET as string, { expiresIn: "30min" });
+          res.cookie("accessToken", accessToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 30 * 60 * 1000,
+          });
+          newToken = true;
         }
-
-        const userExists = await db.query.user.findFirst({
-          where: (user, { eq }) => eq(user.id, decoded.id)
-        });
-
-        if (!userExists) {
-          return res.status(400).json({ message: "Unauthorized" });
-        }
-        const accessToken = jwt.sign(userExists.id, process.env.JWT_SECRET as string, { expiresIn: "15min" });
-        res.json({ accessToken });
       }
     )
-  } catch (error) {
-    return res.status(400).json({ message: "refresh token", error: error });
   }
+  return newToken;
 }
 
 
 
 export const logoutUser = async (req: Request, res: Response) => {
-  res.clearCookie("jwt", {
-    httpOnly: true,
-    sameSite: "none",
-    secure: true
-  })
+  res.clearCookie("accessToken")
+  res.clearCookie("refreshToken")
   return res.status(200).json({ message: "Logout user" })
 }
 
