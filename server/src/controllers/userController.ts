@@ -51,6 +51,7 @@ export const authUser = async (req: Request, res: Response) => {
     }
 
   } catch (error) {
+    console.log(error);
     return res.status(400).json({ message: "Unauthorized", error });
   }
 };
