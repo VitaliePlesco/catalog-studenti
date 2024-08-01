@@ -31,8 +31,8 @@ export const authUser = async (req: Request, res: Response) => {
 
     if (userExists && passwordMatch) {
 
-      // const accessToken = jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET as string, { expiresIn: "30min" });
-      // const refreshToken = jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET as string, { expiresIn: "365days" });
+      const accessToken = jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET as string, { expiresIn: "30min" });
+      const refreshToken = jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET as string, { expiresIn: "365days" });
 
       // res.cookie("accessToken", accessToken, {
       //   httpOnly: true,
@@ -48,7 +48,7 @@ export const authUser = async (req: Request, res: Response) => {
       // });
 
       // return res.status(200).json({ token: accessToken, user: { userId: userExists.id, name: userExists.firstName, email: userExists.email } });
-      return res.status(200).json({ message: "hello" });
+      return res.status(200).json({ message: "hello", token: accessToken });
     }
 
   } catch (error) {
