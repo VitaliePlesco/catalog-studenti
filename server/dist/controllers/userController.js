@@ -4,8 +4,8 @@ import generateToken from "../utils/generateToken.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 export const authUser = async (req, res) => {
+    const { email, password } = req.body;
     try {
-        const { email, password } = req.body;
         if (!email || !password) {
             return res.status(401).json({ message: "All fields are required" }).end();
         }
@@ -42,8 +42,8 @@ export const authUser = async (req, res) => {
     }
 };
 export const registerUser = async (req, res) => {
+    const { firstName, lastName, email, password } = req.body;
     try {
-        const { firstName, lastName, email, password } = await req.body;
         if (!firstName || !lastName || !email || !password) {
             return res.status(400).json({ message: 'All fields are required' });
         }
