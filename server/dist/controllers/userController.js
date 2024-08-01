@@ -19,21 +19,22 @@ export const authUser = async (req, res) => {
             return res.status(400).json({ message: "Unauthorized, wrong password" });
         }
         if (userExists && passwordMatch) {
-            const accessToken = jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET, { expiresIn: "30min" });
-            const refreshToken = jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET, { expiresIn: "365days" });
-            res.cookie("accessToken", accessToken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "lax",
-                maxAge: 30 * 60 * 1000,
-            });
-            res.cookie("refreshToken", refreshToken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "lax",
-                maxAge: 365 * 24 * 60 * 60 * 1000,
-            });
-            return res.status(200).json({ token: accessToken, user: { userId: userExists.id, name: userExists.firstName, email: userExists.email } });
+            // const accessToken = jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET as string, { expiresIn: "30min" });
+            // const refreshToken = jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET as string, { expiresIn: "365days" });
+            // res.cookie("accessToken", accessToken, {
+            //   httpOnly: true,
+            //   secure: true,
+            //   sameSite: "lax",
+            //   maxAge: 30 * 60 * 1000,
+            // });
+            // res.cookie("refreshToken", refreshToken, {
+            //   httpOnly: true,
+            //   secure: true,
+            //   sameSite: "lax",
+            //   maxAge: 365 * 24 * 60 * 60 * 1000,
+            // });
+            // return res.status(200).json({ token: accessToken, user: { userId: userExists.id, name: userExists.firstName, email: userExists.email } });
+            return res.status(200).json({ message: "hello" });
         }
     }
     catch (error) {
