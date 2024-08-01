@@ -1,14 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useStringContext } from "@/context/StringContext";
 
 export default function Home() {
-  const { world } = useStringContext();
   return (
     <main className="container mx-auto px-0">
       <div className="flex flex-col items-center justify-center">
         <div className="px-2">
-          {world.hello}
           <h1 className="text-2xl text-center font-semibold py-10">
             Intră în cont sau crează cont nou
           </h1>

@@ -1,20 +1,25 @@
 "use client";
 import MobileNav from "./MobileNav";
 import Link from "next/link";
-import { useAuthStore } from "@/store/authStore";
-import { useEffect } from "react";
+import { useAuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function NavBar() {
-  const { accessToken, user, logout } = useAuthStore();
+  const { isLoggedIn, logout, user } = useAuthContext();
   const router = useRouter();
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
   };
 
-  const redirect = accessToken ? "/studenti" : "/";
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/login");
+    }
+  }, [isLoggedIn, router]);
+
+  const redirect = isLoggedIn ? "/studenti" : "/";
   return (
     <div className="flex justify-between border-b-[1px] border-b-gray-200 px-2 py-6 shadow-sm">
       <div className="container mx-auto px-0 ">
@@ -29,7 +34,7 @@ export default function NavBar() {
             <MobileNav />
           </div>
 
-          {accessToken ? (
+          {isLoggedIn ? (
             <div
               className="hidden md:flex 
              justify-between gap-6 "
@@ -52,13 +57,13 @@ export default function NavBar() {
             <></>
           )}
 
-          {accessToken ? (
+          {isLoggedIn ? (
             <div
               className="hidden md:flex flex-col md:flex-row
               md:gap-4 align-middle justify-between gap-6 cursor-pointer"
             >
               <div className="hover:bg-gray-100 py-2 px-4 rounded-lg">
-                <h5>{user.name} logat</h5>
+                <h5>{user?.name} logat</h5>
               </div>
 
               <div

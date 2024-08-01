@@ -1,13 +1,15 @@
 "use client";
 import { useEffect } from "react";
 import { axiosPrivate } from "@/axios";
+import { useRouter } from "next/navigation";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { AddStudentModal } from "@/components/AddStudentModal";
 import { EditStudentModal } from "@/components/EditStudentModal";
 import { DeleteStudentModal } from "@/components/DeleteStudentModal";
-import { useAuthStore } from "@/store/authStore";
+import { useAuthContext } from "@/context/AuthContext";
 import { useStudentStore } from "@/store/studentStore";
+import Loading from "@/components/Loading";
 
 export type Student = {
   id: number;
@@ -18,19 +20,26 @@ export type Student = {
 
 export default function Studenti() {
   const { students, setStudents } = useStudentStore();
-  const { user } = useAuthStore();
+  const { user, isLoading, isLoggedIn } = useAuthContext();
+  const router = useRouter();
 
   useEffect(() => {
     const getStudents = async () => {
-      const response = await axiosPrivate.get(`/students/${user.userId}`);
+      const response = await axiosPrivate.get(`/students/${user?.userId}`);
       if (response.status === 200) {
         setStudents(response.data);
       } else {
         console.log(response.data.message);
       }
     };
-    getStudents();
-  }, [user.userId, setStudents, students]);
+    if (isLoggedIn) {
+      getStudents();
+    }
+  }, [user?.userId, setStudents, students, isLoggedIn]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <main className="container mx-auto px-0">

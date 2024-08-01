@@ -2,11 +2,12 @@
 import { useEffect } from "react";
 import { axiosPrivate } from "@/axios";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { useAuthStore } from "@/store/authStore";
 import { useDisciplineStore } from "@/store/disciplineStore";
 import { AddDisciplineModal } from "@/components/AddDisciplineModal";
 import { EditDisciplineModal } from "@/components/EditDisciplineModal";
 import { DeleteDisciplineModal } from "@/components/DeleteDisciplineModal";
+import { useAuthContext } from "@/context/AuthContext";
+import Loading from "@/components/Loading";
 
 export type Discipline = {
   id: number;
@@ -16,19 +17,25 @@ export type Discipline = {
 
 export default function Materii() {
   const { disciplines, setDisciplines } = useDisciplineStore();
-  const { user } = useAuthStore();
+  const { user, isLoading, isLoggedIn } = useAuthContext();
 
   useEffect(() => {
-    const getStudents = async () => {
-      const response = await axiosPrivate.get(`/disciplines/${user.userId}`);
+    const getDisciplines = async () => {
+      const response = await axiosPrivate.get(`/disciplines/${user?.userId}`);
       if (response.status === 200) {
         setDisciplines(response.data);
       } else {
         console.log(response.data.message);
       }
     };
-    getStudents();
-  }, [user.userId, setDisciplines, disciplines]);
+    if (isLoggedIn) {
+      getDisciplines();
+    }
+  }, [user?.userId, setDisciplines, disciplines, isLoggedIn]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <main className="container mx-auto px-0">

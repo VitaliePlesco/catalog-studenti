@@ -34,7 +34,7 @@ export const authUser = async (req, res) => {
                 sameSite: "strict",
                 maxAge: 365 * 24 * 60 * 60 * 1000,
             });
-            return res.status(200).json({ userId: userExists.id, name: userExists.firstName, email: userExists.email });
+            return res.status(200).json({ token: accessToken, user: { userId: userExists.id, name: userExists.firstName, email: userExists.email } });
         }
     }
     catch (error) {

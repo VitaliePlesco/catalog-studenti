@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Button } from "@/components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ExclamationCircleIcon,
@@ -9,19 +9,17 @@ import {
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
 import axios from "@/axios";
-import { useAuthStore } from "@/store/authStore";
-import { useStringContext } from "@/context/StringContext";
+import { useAuthContext } from "@/context/AuthContext";
 
 export default function Login() {
   const [errorMessage, setErrorMessage] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
-  const { setWorld } = useStringContext();
-  const { login } = useAuthStore();
+  const { login, isLoggedIn } = useAuthContext();
+
   const router = useRouter();
 
   const handleChange = (e: any) => {
@@ -37,11 +35,10 @@ export default function Login() {
     e.preventDefault();
 
     try {
+      console.log(isLoggedIn);
       const response = await axios.post("/users/auth", credentials);
       if (response.status === 200) {
-        login(response.data, true);
-        setWorld({ hello: "everyone" });
-        router.push("/studenti");
+        login(response.data.token, response.data.user);
       } else {
         setErrorMessage("Wrong email or password");
       }
@@ -49,6 +46,11 @@ export default function Login() {
       console.log(error);
     }
   };
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/studenti");
+    }
+  }, [isLoggedIn, router]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3 p-2 flex pt-32">
