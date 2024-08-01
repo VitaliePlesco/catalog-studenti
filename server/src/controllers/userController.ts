@@ -36,13 +36,13 @@ export const authUser = async (req: Request, res: Response) => {
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 30 * 60 * 1000,
       });
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 365 * 24 * 60 * 60 * 1000,
       });
 
