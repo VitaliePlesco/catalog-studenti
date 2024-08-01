@@ -1,6 +1,5 @@
 import { db } from "../db/index.js";
 import { user } from "../db/schema.js";
-import generateToken from "../utils/generateToken.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 export const authUser = async (req, res) => {
@@ -62,7 +61,6 @@ export const registerUser = async (req, res) => {
             password: hashedPassword
         }).returning({ id: user.id, email: user.email });
         if (newUser) {
-            generateToken(res, newUser.id);
             return res.status(201).json({ message: "new user created" });
         }
     }
