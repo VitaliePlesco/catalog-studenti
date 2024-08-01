@@ -38,7 +38,7 @@ export default function Materii() {
   }
 
   return (
-    <main className="container mx-auto px-0">
+    <div className="container mx-auto px-0">
       <div className="flex flex-col justify-between items-center px-2">
         <h1 className="text-2xl font-semibold py-10">Materii</h1>
       </div>
@@ -92,6 +92,6 @@ export default function Materii() {
           ))}
         </>
       </div>
-    </main>
+    </div>
   );
 }
