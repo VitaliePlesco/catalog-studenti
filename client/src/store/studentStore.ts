@@ -1,7 +1,7 @@
 import { Student } from "@/app/studenti/page";
 import { create } from "zustand";
 
-type StudentData = Omit<Student, "id" | "userId">;
+
 
 
 type StudentState = {

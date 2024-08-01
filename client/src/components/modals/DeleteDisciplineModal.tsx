@@ -7,21 +7,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import EditStudentForm from "./forms/EditStudentForm";
-import { Student } from "@/app/studenti/page";
-import DeleteStudentForm from "./forms/DeleteStudentForm";
 import { useState } from "react";
+import { Discipline } from "@/app/materii/page";
+import DeleteDisciplineForm from "../forms/DeleteDisciplineForm";
 
-export function DeleteStudentModal({
+export function DeleteDisciplineModal({
   openButtonTitle,
   description,
   dialogTitle,
   icon,
-  student,
+  discipline,
 }: {
   openButtonTitle?: string;
   description?: string;
-  student: Student;
+  discipline: Discipline;
   icon: React.ReactNode;
   dialogTitle: string;
 }) {
@@ -42,7 +41,10 @@ export function DeleteStudentModal({
           <DialogTitle>{dialogTitle}</DialogTitle>
         </DialogHeader>
         <DialogDescription>{description}</DialogDescription>
-        <DeleteStudentForm student={student} setOpen={() => setOpen(false)} />
+        <DeleteDisciplineForm
+          discipline={discipline}
+          setOpen={() => setOpen(false)}
+        />
       </DialogContent>
     </Dialog>
   );

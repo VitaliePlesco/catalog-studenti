@@ -7,17 +7,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import AddStudentForm from "./forms/AddStudentForm";
 import { useState } from "react";
+import EditDisciplineForm from "../forms/EditDisciplineForm";
+import { Discipline } from "@/app/materii/page";
 
-export function AddStudentModal({
+export function EditDisciplineModal({
   openButtonTitle,
   description,
   dialogTitle,
   icon,
+  discipline,
 }: {
   openButtonTitle?: string;
   description?: string;
+  discipline: Discipline;
   icon: React.ReactNode;
   dialogTitle: string;
 }) {
@@ -38,7 +41,10 @@ export function AddStudentModal({
           <DialogTitle>{dialogTitle}</DialogTitle>
         </DialogHeader>
         <DialogDescription>{description}</DialogDescription>
-        <AddStudentForm setOpen={() => setOpen(false)} />
+        <EditDisciplineForm
+          discipline={discipline}
+          setOpen={() => setOpen(false)}
+        />
       </DialogContent>
     </Dialog>
   );

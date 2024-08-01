@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { axiosPrivate } from "@/axios";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useDisciplineStore } from "@/store/disciplineStore";
-import { AddDisciplineModal } from "@/components/AddDisciplineModal";
-import { EditDisciplineModal } from "@/components/EditDisciplineModal";
-import { DeleteDisciplineModal } from "@/components/DeleteDisciplineModal";
+import { AddDisciplineModal } from "@/components/modals/AddDisciplineModal";
+import { EditDisciplineModal } from "@/components/modals/EditDisciplineModal";
+import { DeleteDisciplineModal } from "@/components/modals/DeleteDisciplineModal";
 import { useAuthContext } from "@/context/AuthContext";
 import Loading from "@/components/Loading";
 

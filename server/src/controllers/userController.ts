@@ -13,7 +13,7 @@ export const authUser = async (req: Request, res: Response) => {
   try {
 
     if (!email || !password) {
-      return res.status(401).json({ message: "All fields are required" }).end();
+      return res.status(401).json({ message: "All fields are required" });
     }
 
     const userExists = await db.query.user.findFirst({
@@ -26,7 +26,7 @@ export const authUser = async (req: Request, res: Response) => {
 
     const passwordMatch = await bcrypt.compare(password, userExists?.password!);
     if (!passwordMatch) {
-      return res.status(400).json({ message: "Unauthorized" });
+      return res.status(400).json({ message: "Unauthorized, wrong password" });
     }
 
     if (userExists && passwordMatch) {
@@ -37,13 +37,13 @@ export const authUser = async (req: Request, res: Response) => {
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 30 * 60 * 1000,
       });
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
+        sameSite: "none",
         maxAge: 365 * 24 * 60 * 60 * 1000,
       });
 
@@ -52,7 +52,7 @@ export const authUser = async (req: Request, res: Response) => {
 
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ message: "Unauthorized", error });
+    return res.status(400).json({ message: "Unauthorized,", error });
   }
 };
 

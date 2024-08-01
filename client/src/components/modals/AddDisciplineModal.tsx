@@ -7,20 +7,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import EditStudentForm from "./forms/EditStudentForm";
-import { Student } from "@/app/studenti/page";
-import { useState } from "react";
 
-export function EditStudentModal({
+import { useState } from "react";
+import AddDisciplineForm from "../forms/AddDisciplineForm";
+
+export function AddDisciplineModal({
   openButtonTitle,
   description,
   dialogTitle,
   icon,
-  student,
 }: {
   openButtonTitle?: string;
   description?: string;
-  student: Student;
   icon: React.ReactNode;
   dialogTitle: string;
 }) {
@@ -41,7 +39,7 @@ export function EditStudentModal({
           <DialogTitle>{dialogTitle}</DialogTitle>
         </DialogHeader>
         <DialogDescription>{description}</DialogDescription>
-        <EditStudentForm student={student} setOpen={() => setOpen(false)} />
+        <AddDisciplineForm setOpen={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

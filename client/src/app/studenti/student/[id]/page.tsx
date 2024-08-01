@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { axiosPrivate } from "@/axios";
+import Loading from "@/components/Loading";
+import { useAuthContext } from "@/context/AuthContext";
+import DisciplineAssignSelect from "@/components/DisciplineAssignSelect";
 
 type Student = {
   id: number;
@@ -10,35 +13,40 @@ type Student = {
 };
 
 export default function Student() {
-  const [student, setStudent] = useState<Student[]>();
+  const [student, setStudent] = useState<Student[]>([]);
+  const { user, isLoading, isLoggedIn } = useAuthContext();
 
   const { id } = useParams();
-  const getStudent = async () => {
-    const response = await axiosPrivate.get(`/students/student/${id}`);
-    if (response.status === 200) {
-      setStudent(response.data);
-    }
-  };
 
   useEffect(() => {
-    getStudent();
-  });
-  if (student?.length === 0 || undefined) {
-    return <div>Student not found!</div>;
+    const getStudent = async () => {
+      const response = await axiosPrivate.get(`/students/student/${id}`);
+      if (response.status === 200) {
+        setStudent(response.data);
+        console.log(response.data);
+      }
+    };
+    if (isLoggedIn) {
+      getStudent();
+    }
+  }, [id, isLoggedIn]);
+
+  if (isLoading) {
+    return <Loading />;
   }
+
   return (
     <div className="container mx-auto px-0">
-      <div className="flex flex-col justify-between items-center px-2">
+      <div className="flex flex-col justify-between items-start px-2">
         <h1 className="text-2xl font-semibold py-10">
           {student[0]?.firstName} {student[0]?.lastName}
         </h1>
+        <DisciplineAssignSelect />
       </div>
 
       <div className="container mx-auto px-0 pb-1 bg-gray-100">
-        <div className="grid grid-cols-2 md:grid-cols-3 p-1  ">
-          <div className="py-4 px-2 md:p-4">
-            <h2 className="text-xl font-bold">Denumire</h2>
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 p-1">
+          <div className="py-4 px-2 md:p-4 w-full"></div>
           <div className="py-4 px-2 md:p-4">
             <h2 className="text-xl font-bold"></h2>
           </div>
