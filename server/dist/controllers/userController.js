@@ -7,7 +7,7 @@ export const authUser = async (req, res) => {
     const { email, password } = req.body;
     try {
         if (!email || !password) {
-            return res.status(401).json({ message: "All fields are required" }).end();
+            return res.status(401).json({ message: "All fields are required" });
         }
         const userExists = await db.query.user.findFirst({
             where: (user, { eq }) => eq(user.email, email)
@@ -17,7 +17,7 @@ export const authUser = async (req, res) => {
         }
         const passwordMatch = await bcrypt.compare(password, userExists?.password);
         if (!passwordMatch) {
-            return res.status(400).json({ message: "Unauthorized" });
+            return res.status(400).json({ message: "Unauthorized, wrong password" });
         }
         if (userExists && passwordMatch) {
             const accessToken = jwt.sign({ userId: userExists.id }, process.env.JWT_SECRET, { expiresIn: "30min" });
@@ -25,13 +25,13 @@ export const authUser = async (req, res) => {
             res.cookie("accessToken", accessToken, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "strict",
+                sameSite: "none",
                 maxAge: 30 * 60 * 1000,
             });
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "strict",
+                sameSite: "none",
                 maxAge: 365 * 24 * 60 * 60 * 1000,
             });
             return res.status(200).json({ token: accessToken, user: { userId: userExists.id, name: userExists.firstName, email: userExists.email } });
@@ -39,7 +39,7 @@ export const authUser = async (req, res) => {
     }
     catch (error) {
         console.log(error);
-        return res.status(400).json({ message: "Unauthorized", error });
+        return res.status(400).json({ message: "Unauthorized,", error });
     }
 };
 export const registerUser = async (req, res) => {
