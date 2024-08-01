@@ -9,8 +9,8 @@ import bcrypt from "bcryptjs";
 
 
 export const authUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
   try {
-    const { email, password } = req.body;
 
     if (!email || !password) {
       return res.status(401).json({ message: "All fields are required" }).end();
@@ -56,8 +56,8 @@ export const authUser = async (req: Request, res: Response) => {
 };
 
 export const registerUser = async (req: Request, res: Response) => {
+  const { firstName, lastName, email, password } = req.body;
   try {
-    const { firstName, lastName, email, password } = await req.body;
 
     if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({ message: 'All fields are required' })
@@ -81,7 +81,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
     if (newUser) {
       generateToken(res, newUser.id);
-      return res.status(201).json({ message: "new user created" }).end();
+      return res.status(201).json({ message: "new user created" });
     }
   } catch (error) {
     return res.status(400).json({ message: "could not create new user", error: error });

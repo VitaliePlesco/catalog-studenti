@@ -62,7 +62,7 @@ export const registerUser = async (req, res) => {
         }).returning({ id: user.id, email: user.email });
         if (newUser) {
             generateToken(res, newUser.id);
-            return res.status(201).json({ message: "new user created" }).end();
+            return res.status(201).json({ message: "new user created" });
         }
     }
     catch (error) {

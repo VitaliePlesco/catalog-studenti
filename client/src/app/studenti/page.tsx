@@ -59,7 +59,7 @@ export default function Studenti() {
         <>
           {students.map((student: Student) => (
             <div
-              key={student.id}
+              key={student.id + "n"}
               className="grid grid-cols-2 md:grid-cols-3 p-1"
             >
               <div className="bg-white py-4 px-2 md:p-4">

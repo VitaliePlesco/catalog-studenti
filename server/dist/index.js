@@ -23,6 +23,9 @@ app.use('/api/students', studentRoutes);
 app.use("/api/disciplines", disciplineRoutes);
 app.use("/api/marks", markRoutes);
 app.use("/api/student-discipline", studentDisciplineRoutes);
+app.get("/", (req, res) => {
+    res.json({ message: "running" });
+});
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
