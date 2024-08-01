@@ -21,7 +21,7 @@ export const authUser = async (req: Request, res: Response) => {
     });
 
     if (!userExists) {
-      return res.status(400).json({ message: "User doesn't exist" }).end();
+      return res.status(400).json({ message: "User doesn't exist" });
     }
 
     const passwordMatch = await bcrypt.compare(password, userExists?.password!);

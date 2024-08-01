@@ -13,7 +13,7 @@ export const authUser = async (req, res) => {
             where: (user, { eq }) => eq(user.email, email)
         });
         if (!userExists) {
-            return res.status(400).json({ message: "User doesn't exist" }).end();
+            return res.status(400).json({ message: "User doesn't exist" });
         }
         const passwordMatch = await bcrypt.compare(password, userExists?.password);
         if (!passwordMatch) {
@@ -38,6 +38,7 @@ export const authUser = async (req, res) => {
         }
     }
     catch (error) {
+        console.log(error);
         return res.status(400).json({ message: "Unauthorized", error });
     }
 };
