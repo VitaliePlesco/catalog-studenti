@@ -36,17 +36,17 @@ export const authUser = async (req: Request, res: Response) => {
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "none",
+        sameSite: "strict",
         maxAge: 30 * 60 * 1000,
       });
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "none",
+        sameSite: "strict",
         maxAge: 365 * 24 * 60 * 60 * 1000,
       });
 
-      return res.status(200).json({ token: accessToken, user: { userId: userExists.id, name: userExists.firstName, email: userExists.email } });
+      return res.status(200).json({ user: { userId: userExists.id, name: userExists.firstName, email: userExists.email } });
 
     }
 
