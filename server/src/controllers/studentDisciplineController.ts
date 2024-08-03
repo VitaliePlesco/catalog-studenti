@@ -17,13 +17,21 @@ export const getStudentDisciplines = async (req: Request, res: Response) => {
 export const createStudentDiscipline = async (req: Request, res: Response) => {
   const user = req.user;
   const { studentId, disciplineId } = req.body;
+  const assignedDiscipline = await db.select().from(studentDiscipline).where(and(
+    eq(studentDiscipline.studentId, Number(studentId)),
+    eq(studentDiscipline.disciplineId, Number(disciplineId)
+    )));
+
+  if (assignedDiscipline.length > 0) {
+    return res.status(400).json({ message: "student is already enrolled in this discipline" });
+  }
   try {
     const assignDiscipline = await db.insert(studentDiscipline).values({
       studentId: Number(studentId),
       disciplineId: Number(disciplineId),
       userId: user[0]?.id as string,
     }).returning();
-    return res.status(201).json({ message: "new discipline assigned successfully" }).end();
+    return res.status(201).json(assignDiscipline);
   } catch (error) {
     return res.status(400).json({ message: "could not assigne discipline", error: error });
   }

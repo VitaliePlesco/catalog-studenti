@@ -11,13 +11,8 @@ export default function NavBar() {
 
   const handleLogout = () => {
     logout();
+    router.push("/login");
   };
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/login");
-    }
-  }, [isLoggedIn, router]);
 
   const redirect = isLoggedIn ? "/studenti" : "/";
   return (

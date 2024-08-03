@@ -23,7 +23,6 @@ export default function Student() {
       const response = await axiosPrivate.get(`/students/student/${id}`);
       if (response.status === 200) {
         setStudent(response.data);
-        console.log(response.data);
       }
     };
     if (isLoggedIn) {
@@ -41,12 +40,14 @@ export default function Student() {
         <h1 className="text-2xl font-semibold py-10">
           {student[0]?.firstName} {student[0]?.lastName}
         </h1>
-        <DisciplineAssignSelect />
       </div>
+      <DisciplineAssignSelect studentId={student[0]?.id} />
 
       <div className="container mx-auto px-0 pb-1 bg-gray-100">
         <div className="grid grid-cols-2 md:grid-cols-3 p-1">
-          <div className="py-4 px-2 md:p-4 w-full"></div>
+          <div className="py-4 px-2 md:p-4 w-full flex items-center">
+            <h2 className="text-xl font-bold">Note</h2>
+          </div>
           <div className="py-4 px-2 md:p-4">
             <h2 className="text-xl font-bold"></h2>
           </div>
