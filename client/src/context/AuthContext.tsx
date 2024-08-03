@@ -12,8 +12,6 @@ type TAuthContext = {
   setUser: (userData: User) => void;
   isLoggedIn: boolean;
   setIsLoggedIn: (state: boolean) => void;
-  jwt: string | null;
-  setJwt: (token: string) => void;
   isLoading: boolean;
   setIsLoading: (state: boolean) => void;
   login: (token: string, user: User) => void;
@@ -25,15 +23,12 @@ const AuthContext = createContext<TAuthContext>({} as TAuthContext);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [jwt, setJwt] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const storedJwt = localStorage.getItem("jwt");
     const storedUser = localStorage.getItem("user");
-    if (storedJwt && storedUser) {
+    if (storedUser) {
       setIsLoggedIn(true);
-      setJwt(storedJwt);
       setUser(JSON.parse(storedUser));
     }
     setIsLoading(false);
@@ -41,17 +36,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   function login(token: string, user: User) {
     setIsLoggedIn(true);
-    setJwt(token);
     setUser(user);
-    localStorage.setItem("jwt", token);
     localStorage.setItem("user", JSON.stringify(user));
   }
 
   function logout() {
     setIsLoggedIn(false);
-    setJwt(null);
     setUser(null);
-    localStorage.removeItem("jwt");
     localStorage.removeItem("user");
   }
 
@@ -60,8 +51,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoggedIn,
     user,
     setUser,
-    jwt,
-    setJwt,
     isLoading,
     setIsLoading,
     login,
