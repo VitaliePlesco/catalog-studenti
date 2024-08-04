@@ -39,7 +39,7 @@ export default function MobileNav() {
         {isLoggedIn ? (
           <>
             <DropdownMenuGroup>
-              <Link href="/studenti">
+              <Link href={`${redirect}`}>
                 <DropdownMenuItem>Studenți</DropdownMenuItem>
               </Link>
               <Link href="/materii">
